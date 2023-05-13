@@ -10,6 +10,49 @@
  *                        
  */
 
+// Alarm pins
+#define ALARM_PIN_1_A 5
+#define ALARM_PIN_2_A 4
+#define ALARM_PIN_3_A 3
+#define ALARM_PIN_4_A 2
+
+#define ALARM_PIN_1_B 13
+#define ALARM_PIN_2_B 12
+#define ALARM_PIN_3_B 11
+#define ALARM_PIN_4_B 10
+
+#define ALARM_PIN_1_C 9
+#define ALARM_PIN_2_C 8
+#define ALARM_PIN_3_C 7
+#define ALARM_PIN_4_C 6
+
+// I2C pins
+#define I2C_SDA 0
+#define I2C_SCL 1
+
+// Button pins
+#define BUTTON_PIN 14
+#define BUTTON_LED_PIN 15
+
+// Display pins
+#define DISPLAY_DC 16
+#define DISPLAY_CS 17
+#define DISPLAY_SCK 18
+#define DISPLAY_MOSI 19
+#define DISPLAY_RST 20
+
+// Encouder pins
+#define ENCODER_A 23
+#define ENCODER_B 22
+#define ENCODER_SW 21
+
+// Built in LED
+#define LED_PIN 25
+
+// Output Enable
+#define OUTPUT_ENABLE_1_PIN 26
+#define OUTPUT_ENABLE_2_PIN 27
+#define OUTPUT_ENABLE_3_PIN 28
 
 
 /***
