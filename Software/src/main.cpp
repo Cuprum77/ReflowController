@@ -1,6 +1,5 @@
 #include "include/Defines.hpp"
 
-
 int main()
 {
 	stdio_init_all();

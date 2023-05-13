@@ -601,7 +601,7 @@
   (symbol (lib_id "power:+3V3") (at 99.06 54.61 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 044138b3-5874-4900-bf08-4249fb192e1c)
-    (property "Reference" "#PWR031" (at 99.06 58.42 0)
+    (property "Reference" "#PWR039" (at 99.06 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V3" (at 99.441 50.2158 0)
@@ -617,7 +617,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
       (project "USB-PD"
@@ -634,7 +634,7 @@
   (symbol (lib_id "power:GND") (at 164.465 95.25 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0ecf1f05-5576-408d-893b-5e992dd0df71)
-    (property "Reference" "#PWR035" (at 164.465 101.6 0)
+    (property "Reference" "#PWR043" (at 164.465 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 164.465 100.33 0)
@@ -650,7 +650,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR035") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
       (project "USB-PD"
@@ -667,7 +667,7 @@
   (symbol (lib_id "Device:R_Small") (at 99.06 62.23 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 24e61015-1abc-4b2d-ae52-3e98188b28ee)
-    (property "Reference" "R13" (at 101.6 60.9599 0)
+    (property "Reference" "R15" (at 101.6 60.9599 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "10k" (at 101.6 63.4999 0)
@@ -684,7 +684,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "R13") (unit 1)
+          (reference "R15") (unit 1)
         )
       )
       (project "USB-PD"
@@ -701,7 +701,7 @@
   (symbol (lib_id "power:GND") (at 109.22 76.835 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4e907310-bcbd-49e3-b97e-f6e615bafcc8)
-    (property "Reference" "#PWR034" (at 109.22 83.185 0)
+    (property "Reference" "#PWR042" (at 109.22 83.185 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 109.347 81.2292 0)
@@ -717,7 +717,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
       (project "USB-PD"
@@ -778,7 +778,7 @@
   (symbol (lib_id "Device:C_Small") (at 107.95 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 78de4c6c-5f43-435a-ab78-7915ed586df2)
-    (property "Reference" "C22" (at 110.2741 108.3178 0)
+    (property "Reference" "C23" (at 110.2741 108.3178 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 110.2741 111.0929 0)
@@ -795,7 +795,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "C22") (unit 1)
+          (reference "C23") (unit 1)
         )
       )
       (project "USB-PD"
@@ -812,7 +812,7 @@
   (symbol (lib_id "power:GND") (at 172.085 123.19 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7a56aa8e-01b7-41c2-a3e5-9aa84f00bc55)
-    (property "Reference" "#PWR036" (at 172.085 129.54 0)
+    (property "Reference" "#PWR044" (at 172.085 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 172.085 128.27 0)
@@ -828,7 +828,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR036") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
       (project "USB-PD"
@@ -880,7 +880,7 @@
   (symbol (lib_id "Device:R_Small") (at 91.44 71.12 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 84cefc73-a121-4cf9-839e-2b0d6b438fa6)
-    (property "Reference" "R12" (at 91.44 67.31 90)
+    (property "Reference" "R14" (at 91.44 67.31 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "1k" (at 91.44 69.192 90)
@@ -897,7 +897,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "R12") (unit 1)
+          (reference "R14") (unit 1)
         )
       )
       (project "USB-PD"
@@ -914,7 +914,7 @@
   (symbol (lib_id "Device:C_Small") (at 99.06 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9c61e080-7a9a-4e4e-82a7-88eaae6ea455)
-    (property "Reference" "C21" (at 101.3841 108.3178 0)
+    (property "Reference" "C22" (at 101.3841 108.3178 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 101.3841 111.0929 0)
@@ -931,7 +931,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "C21") (unit 1)
+          (reference "C22") (unit 1)
         )
       )
       (project "USB-PD"
@@ -948,7 +948,7 @@
   (symbol (lib_id "power:GND") (at 99.06 118.11 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9d23277a-24d0-42b6-90c9-3f5a6c0be40a)
-    (property "Reference" "#PWR033" (at 99.06 124.46 0)
+    (property "Reference" "#PWR041" (at 99.06 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 99.06 123.19 0)
@@ -964,7 +964,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR033") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
       (project "USB-PD"
@@ -981,7 +981,7 @@
   (symbol (lib_id "power:+3V3") (at 99.06 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b5b7fa29-0a2a-4a43-a3bc-c796f408f63d)
-    (property "Reference" "#PWR032" (at 99.06 104.14 0)
+    (property "Reference" "#PWR040" (at 99.06 104.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V3" (at 99.06 95.25 0)
@@ -997,7 +997,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR032") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
       (project "USB-PD"
@@ -1014,7 +1014,7 @@
   (symbol (lib_id "power:+3V3") (at 176.53 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d740ee1f-fc59-4fc7-a789-40b740dfb202)
-    (property "Reference" "#PWR037" (at 176.53 104.14 0)
+    (property "Reference" "#PWR045" (at 176.53 104.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V3" (at 176.53 95.25 0)
@@ -1030,7 +1030,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "#PWR037") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
       (project "USB-PD"
@@ -1047,7 +1047,7 @@
   (symbol (lib_id "Device:R_Small") (at 121.92 63.5 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f036a8e9-4e47-4e1f-90c9-ccde979c0e8c)
-    (property "Reference" "R14" (at 121.92 58.42 90)
+    (property "Reference" "R16" (at 121.92 58.42 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "270" (at 121.92 60.96 90)
@@ -1064,7 +1064,7 @@
     (instances
       (project "Reflow Oven"
         (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/a3b6b84f-45d1-47f7-925b-5d1aaeec6fa2"
-          (reference "R14") (unit 1)
+          (reference "R16") (unit 1)
         )
       )
       (project "USB-PD"
