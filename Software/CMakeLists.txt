@@ -109,6 +109,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
 )
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/Memory)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/MCP9600)
+
+link_directories(${CMAKE_SOURCE_DIR}/lib/Memory)
+link_directories(${CMAKE_SOURCE_DIR}/lib/MCP9600)
+
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})
 
@@ -117,6 +123,8 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     pico_multicore
     hardware_i2c
+    Memory
+    MCP9600
 )
 
 # Enable usb output, disable uart output
