@@ -27,8 +27,12 @@
 #define ALARM_PIN_4_C 6
 
 // I2C pins
-#define I2C_SDA 0
-#define I2C_SCL 1
+//#define I2C_SDA 0
+//#define I2C_SCL 1
+
+// dev
+#define I2C_SDA 20
+#define I2C_SCL 21
 
 // Button pins
 #define BUTTON_PIN 14
@@ -64,6 +68,8 @@
  *                                                 
  */
 
+// I2C Speed
+#define I2C_SPEED 100000
 
 
 /***
@@ -75,6 +81,13 @@
  *                                                     
  */
 
+// MCP9600 Breakout boards
+#define MCP9600_1_ADDRESS 0x60
+#define MCP9600_2_ADDRESS 0x61  
+#define MCP9600_3_ADDRESS 0x67
+
+// EEPROM IC
+#define EEPROM_ADDRESS 0x50
 
 
 /***
@@ -87,6 +100,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"
 #include "pico/binary_info.h"
@@ -95,6 +109,10 @@
 #include "hardware/i2c.h"
 #include "hardware/watchdog.h"
 #include "tusb.h"
+
+#include "Memory.hpp"
+#include "MCP9600.hpp"
+#include "version.h"
 
 
 
