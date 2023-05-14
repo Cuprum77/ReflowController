@@ -1,5 +1,5 @@
 # the file name, its location and the target device name
-file_name = "USB-PD_Power_Supply.uf2"
+file_name = "ReflowController.uf2"
 file_path = "../build/" + file_name
 device_target = "RPI-RP2"
 # the vendor id of the device
