@@ -26,6 +26,12 @@
 #define ALARM_PIN_3_C 7
 #define ALARM_PIN_4_C 6
 
+// dev
+#define ALARM_PIN_1_D 15
+#define ALARM_PIN_2_D 14
+#define ALARM_PIN_3_D 13
+#define ALARM_PIN_4_D 12
+
 // I2C pins
 //#define I2C_SDA 0
 //#define I2C_SCL 1
@@ -71,6 +77,14 @@
 // I2C Speed
 #define I2C_SPEED 100000
 
+// Display
+#define DISPLAY_WIDTH 240
+#define DISPLAY_HEIGHT 240
+#define DISPLAY_OFFSET_X0 0
+#define DISPLAY_OFFSET_X1 0
+#define DISPLAY_OFFSET_Y0 0
+#define DISPLAY_OFFSET_Y1 0
+
 
 /***
  *         _       _     _                             
@@ -112,6 +126,7 @@
 
 #include "Memory.hpp"
 #include "MCP9600.hpp"
+#include "Display.hpp"
 #include "version.h"
 
 
