@@ -26,8 +26,7 @@ Display_Params displayParams = {
 Memory memory(EEPROM_ADDRESS, i2c0);
 MCP9600 mcp9600_1(MCP9600_1_ADDRESS, i2c0);
 MCP9600 mcp9600_2(MCP9600_2_ADDRESS, i2c0);
-MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0, 
-	ALARM_PIN_1_D, ALARM_PIN_2_D, ALARM_PIN_3_D, ALARM_PIN_4_D);
+MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0);
 Display display(spi0, displayPins, displayParams, false, false, GC9A01);
 
 int main()
@@ -58,7 +57,6 @@ int main()
 
 	// verify that the EEPROM is connected
 	bool EEPROM_is_connected = memory.verifyConnection();
-	printf("Booting...\n");
 	display.fill(Colors::RaspberryRed);
 
 	// infinite loop

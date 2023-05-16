@@ -56,35 +56,18 @@ typedef enum
     FILTER_MAXIMUM = 0x07
 } filter_coefficient_t;
 
-typedef enum
-{
-    ALERT_1,
-    ALERT_2,
-    ALERT_3,
-    ALERT_4
-} alert_t;
-
-
 class MCP9600
 {
 public:
-    MCP9600(uint device_address, i2c_inst_t* i2c, uint alert1_pin, 
-        uint alert2_pin, uint alert3_pin , uint alert4_pin);
-    MCP9600(uint device_address, i2c_inst_t* i2c, thermocouple_type_t thermocouple_type = thermocouple_type_t::TYPE_K, 
-            filter_coefficient_t coefficient = filter_coefficient_t::FILTER_MIDDLE, uint alert1_pin = -1, uint alert2_pin = -1, 
-            uint alert3_pin = -1, uint alert4_pin = -1);
+    MCP9600(uint device_address, i2c_inst_t* i2c, 
+            thermocouple_type_t thermocouple_type = thermocouple_type_t::TYPE_K, 
+            filter_coefficient_t coefficient = filter_coefficient_t::FILTER_MIDDLE);
     void init();
     bool isConnected();
 
     float getHotJunctionTemperature();
     float getJunctionTemperatureDelta();
     float getColdJunctionTemperature();
-
-    void setAlertConfig(alert_t alert);
-    void setAlertLimit(alert_t alert, uint16_t limit);
-    void setAlertHysteresis(alert_t alert, uint8_t hysteresis);
-    void alertAttachInterrupt(alert_t alert, void (*callback)(uint gpio, uint32_t events));
-    void alertInterruptClear(alert_t alert);
 
     float convertTemperature(uint8_t* data);
     uint16_t convertTemperature(float data);
@@ -97,18 +80,8 @@ private:
     uint device_address;
     thermocouple_type_t thermocouple_type;
     filter_coefficient_t coefficient;
-    uint alert1_pin;
-    uint alert2_pin;
-    uint alert3_pin;
-    uint alert4_pin;
     uint id;
     uint revision;
-    uint8_t alertConfig[4] = { 0x0 };
-
-    uint* getAlertPin(alert_t alert);
-    uint getAlertConfigRegister(alert_t alert);
-    uint getAlertLimitRegister(alert_t alert);
-    uint getAlertHysteresisRegister(alert_t alert);
 
     bool verifyConnection();
     void writeRegister(uint8_t reg, uint8_t* data, uint8_t length);

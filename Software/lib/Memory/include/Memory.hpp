@@ -21,10 +21,16 @@ public:
     bool verifyConnection();
     int selfTest();
 
-    unsigned int readWord(unsigned int target_address);
-    void writeWord(unsigned int target_address, unsigned int data);
+    void setProfile(Profile profile);
+    Profile getProfile(unsigned int profile_number);
+    void readProfile(Profile profile);
+    void writeProfile(Profile profile);
 private:
     unsigned int write_cycle_time;
     unsigned int eeprom_addr; 
-    i2c_inst_t*  i2c;
+    i2c_inst_t* i2c;
+    MemoryMap memory_map;
+
+    unsigned int readWord(unsigned int target_address);
+    void writeWord(unsigned int target_address, unsigned int data);
 };

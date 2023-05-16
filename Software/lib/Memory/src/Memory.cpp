@@ -63,8 +63,67 @@ int Memory::selfTest()
     return error_counter;
 }
 
+/**
+ * @brief Read a profile from the eeprom
+ * @param profile_number the profile number to read
+*/
+void Memory::readProfile(Profile profile)
+{
+    // if the profile number is invalid, return
+    if(profile != Profile::Profile1 || profile != Profile::Profile2 || 
+        profile != Profile::Profile3 || profile != Profile::Profile4) { return; }
+
+    // read the profile from the eeprom
+    unsigned int address = (unsigned int)profile;
+    ReflowRegister* reg = memory_map.getProfile(profile);
+
+    // read the profile from the eeprom
+    unsigned int data[5] = {0};
+    for(int i = 0; i < 5; i++)
+    {
+        data[i] = this->readWord(address);
+        address += 4;
+    }
+
+    // set the profile registers
+    reg->_value = data;
+    reg->_celsius = data[0] & 0x01;
+    reg->_checksum = data[5];
+}
 
 /**
+ * @brief Write a profile to the eeprom
+ * @param profile_number the profile number to write
+*/
+void Memory::writeProfile(Profile profile)
+{
+    // if the profile number is invalid, return
+    if(profile != Profile::Profile1 || profile != Profile::Profile2 || 
+        profile != Profile::Profile3 || profile != Profile::Profile4) { return; }
+
+    // write the profile to the eeprom
+    unsigned int address = (unsigned int)profile;
+    ReflowRegister* reg = memory_map.getProfile(profile);
+
+    // update the checksum
+    reg->getCheckSum();
+
+    // construct the data to write
+    unsigned int data[5] = {0};
+    reg->_value.getValue(data);
+    data[0] |= reg->_celsius;
+    data[5] = reg->_checksum;
+
+    // write the data to the eeprom
+    for(int i = 0; i < 5; i++)
+    {
+        this->writeWord(address, data[i]);
+        address += 4;
+    }
+}
+
+/**
+ * @private
  * @brief read a word from the eeprom
  * @param target_address the address to read from
  * @return the word read from the eeprom
@@ -86,6 +145,7 @@ unsigned int Memory::readWord(unsigned int target_address)
 }
 
 /**
+ * @private
  * @brief write a word to the eeprom
  * @param target_address the address to write to
  * @param data the word to write to the eeprom
