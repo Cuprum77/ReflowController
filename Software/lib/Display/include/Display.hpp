@@ -56,14 +56,15 @@ class Display
 {
 public:
     Display(spi_inst_t* spi, Display_Pins pins, 
-        Display_Params params, bool dimming = false, 
-        bool backlight = false, display_type_t type = ST7789);
+        Display_Params params, display_type_t type = ST7789, 
+        bool dimming = false, bool backlight = false);
     void clear(void);
     void displayOn(void);
     void displayOff(void);
     void setCursor(Point point);
     Point getCursor(void);
     Point getCenter(void);
+    void setRotation(displayRotation_t rotation);
 
     void fill(Color color);
     void drawPixel(Point Point, Color color);
@@ -148,7 +149,7 @@ public:
 #pragma endregion
 
     void setBrightness(unsigned char brightness);
-private:
+//private:
     spi_inst_t* spi;
     Display_Pins pins;
     Display_Params params;
@@ -163,13 +164,21 @@ private:
     bool backlight;
     display_type_t type;
 
+    void ST7789_Init(void);
+    void ST7789_SetRotation(displayRotation_t rotation);
+
     void GC9A01_Init(void);
     void GC9A01_SoftReset(void);
     void GC9A01_HardReset(void);
+    void GC9A01_SetRotation(displayRotation_t rotation);
 
     void writeData(Display_Commands command, 
-        const unsigned char* data, size_t length);
-    void writeData(uint command, const uchar* data, size_t length);
+        const unsigned char* data, size_t length) { writeData((uchar)command, data, length); }
+    void writeData(Display_Commands command, uchar data) { writeData((uchar)command, &data, 1); }
+    void writeData(Display_Commands command) { writeData(command, nullptr, 0); }
+    void writeData(uchar command, const uchar* data, size_t length);
+    void writeData(uchar command, uchar data) { writeData(command, &data, 1); }
+    void writeData(uchar command) { writeData(command, nullptr, 0); }
     void columnAddressSet(uint x0, uint x1);
     void rowAddressSet(uint y0, uint y1);
     void memoryWrite(void);

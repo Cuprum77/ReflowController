@@ -8,8 +8,6 @@
 #define PROFILE_4_ADDR 0x60
 
 
-
-unsigned char prevProfileNumber = 0x0;
 enum Profile 
 { 
     Profile1 = PROFILE_1_ADDR, 
@@ -20,8 +18,6 @@ enum Profile
 
 struct ReflowProfile
 {
-    unsigned char profileNumber = 0x0; // 0x1
-
     unsigned short preheatTarget = 0x0; // 0x2
     unsigned short soakTarget    = 0x0; // 0x3
     unsigned short reflowTarget  = 0x0; // 0x4
@@ -36,7 +32,6 @@ struct ReflowProfile
     ReflowProfile() { }
     ReflowProfile(unsigned int* data)
     {
-        profileNumber = (data[0] >> 0x8) & 0xff;
         preheatTarget = (data[0] >> 0x10) & 0xffff;
         soakTarget    = data[1] & 0xffff;
         reflowTarget  = (data[1] >> 0x10) & 0xffff;
@@ -54,7 +49,6 @@ struct ReflowProfile
         unsigned short reflowTime, unsigned short peakTime, 
         unsigned short reflow2Time)
     {
-        this->profileNumber = profileNumber;
         this->preheatTarget = preheatTarget;
         this->soakTarget    = soakTarget;
         this->reflowTarget  = reflowTarget;
@@ -68,7 +62,6 @@ struct ReflowProfile
 
     void getValue(unsigned int* data)
     {
-        data[0] = (profileNumber << 0x8);
         data[0] |= (preheatTarget << 0x10);
         data[1] = soakTarget;
         data[1] |= (reflowTarget << 0x10);
@@ -90,14 +83,12 @@ struct ReflowRegister
     ReflowRegister() 
     {
         _value = ReflowProfile();
-        _value.profileNumber = prevProfileNumber++;
     }
 
     ReflowRegister(ReflowProfile profile, bool celsius = true)
     {
         _celsius = celsius;
         _value = profile;
-        _value.profileNumber = prevProfileNumber++;
     }
 
     ReflowProfile getValue() { return _value; }
@@ -108,7 +99,6 @@ struct ReflowRegister
         {
             // calculate a new checksum based off the value
             _checksum = 0;
-            _checksum += _value.profileNumber;
             _checksum += (unsigned int)_celsius;
             _checksum += _value.preheatTarget;
             _checksum += _value.soakTarget;

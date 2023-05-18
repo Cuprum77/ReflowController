@@ -27,8 +27,9 @@ Memory memory(EEPROM_ADDRESS, i2c0);
 MCP9600 mcp9600_1(MCP9600_1_ADDRESS, i2c0);
 MCP9600 mcp9600_2(MCP9600_2_ADDRESS, i2c0);
 MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0);
-Display display(spi0, displayPins, displayParams, false, false, GC9A01);
+Display display(spi0, displayPins, displayParams, GC9A01);
 
+bool led_on = false;
 int main()
 {
 	// initialize the stdio
@@ -72,6 +73,8 @@ int main()
 
 		// delay
 		sleep_ms(500);
+		gpio_put(LED_PIN, led_on);
+		led_on = !led_on;
 
 		watchdog_update();
 	}

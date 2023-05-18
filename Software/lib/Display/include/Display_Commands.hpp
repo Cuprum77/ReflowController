@@ -184,10 +184,10 @@ typedef enum
     MV = 0x20,
     // Line Address Order
     ML = 0x10,
+    // BGR Order
+    BGR = 0x08,
     // Display Data Latch Data Order
     MH = 0x04,
     // RGB Order
     RGB = 0x00,
-    // BGR Order
-    BGR = 0x08,
 } Display_MADCTL;

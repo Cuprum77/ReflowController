@@ -9,8 +9,8 @@
  * @param backlight Enable backlight
 */
 Display::Display(spi_inst_t* spi, Display_Pins pins, 
-    Display_Params params, bool dimming, bool backlight,
-    display_type_t type)
+    Display_Params params, display_type_t type, 
+    bool dimming, bool backlight)
 {
     this->spi = spi;
     this->pins = pins;
@@ -69,65 +69,9 @@ Display::Display(spi_inst_t* spi, Display_Pins pins,
     }
 
     if (this->type == display_type_t::GC9A01)
-    {
         this->GC9A01_Init();
-    }
     else if(this->type == display_type_t::ST7789)
-    {
-        sleep_ms(100);
-
-        // set the SPI format
-        spi_set_format(this->spi, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
-        
-        // reset the display
-        this->writeData(Display_Commands::SWRESET, NULL, 0);
-        sleep_ms(150);
-
-        // set the display to sleep out
-        this->writeData(Display_Commands::SLPOUT, NULL, 0);
-        sleep_ms(50);
-
-        // set the display to interface pixel format
-        // 0x5 << 4 = 65k of rgb interface
-        // 0x5 = 16 bits per pixel
-        uchar pixelFormat = 0x5 << 4 | 0x5;
-        this->writeData(Display_Commands::COLMOD, &pixelFormat, 1);
-        sleep_ms(10);
-
-        // madctl = memory access control
-        uchar madctl = 0x00;
-        switch(this->params.rotation)
-        {
-            case 1:
-                madctl = Display_MADCTL::MX || Display_MADCTL::MV || Display_MADCTL::RGB;
-                break;
-            case 2:
-                madctl = Display_MADCTL::MX || Display_MADCTL::MY || Display_MADCTL::RGB;
-                break;
-            case 3:
-                madctl = Display_MADCTL::MY || Display_MADCTL::MV || Display_MADCTL::RGB;
-                break;
-            default:
-                madctl = Display_MADCTL::RGB;
-                break;
-        }
-        this->writeData(Display_Commands::MADCTL, 0x00, 1);
-
-        // set the display to memory access control
-        this->setCursor({0, 0});
-
-        // display inversion on
-        this->writeData(Display_Commands::INVON, NULL, 0);
-        sleep_ms(10);
-
-        // normal display mode on
-        this->writeData(Display_Commands::NORON, NULL, 0);
-        sleep_ms(10);
-
-        // display on
-        this->writeData(Display_Commands::DISPON, NULL, 0);
-        sleep_ms(10);
-    }
+        this->ST7789_Init();
 }
 
 /**
@@ -144,7 +88,7 @@ void Display::clear()
 */
 void Display::displayOn()
 {
-    this->writeData(Display_Commands::DISPON, NULL, 0);
+    this->writeData(Display_Commands::DISPON);
     sleep_ms(10);
 }
 
@@ -153,7 +97,7 @@ void Display::displayOn()
 */
 void Display::displayOff()
 {
-    this->writeData(Display_Commands::DISPOFF, NULL, 0);
+    this->writeData(Display_Commands::DISPOFF);
     sleep_ms(10);
 }
 
@@ -200,6 +144,19 @@ Point Display::getCenter()
 }
 
 /**
+ * @brief Rotate the display
+ * @param rotation Rotation to set
+*/
+void Display::setRotation(displayRotation_t rotation)
+{
+    // set the rotation based on the display type
+    if (this->type == display_type_t::GC9A01)
+        this->GC9A01_SetRotation(rotation);
+    else if(this->type == display_type_t::ST7789)
+        this->ST7789_SetRotation(rotation);
+}
+
+/**
  * @brief Set the backlight brightness
  * @param brightness Brightness (0-255) if dimming is enabled, brightness (0-1) if dimming is disabled
 */
@@ -231,20 +188,7 @@ void Display::setBrightness(uchar brightness)
  * @param data Data to send
  * @param length Length of the data
 */
-void Display::writeData(uint command, const uchar* data, size_t length)
-{
-    this->writeData((Display_Commands)command, data, length);
-}
-
-
-/**
- * @private
- * @brief Write data to the display
- * @param command Command to send
- * @param data Data to send
- * @param length Length of the data
-*/
-void Display::writeData(Display_Commands command, const uchar* data, size_t length)
+void Display::writeData(uchar command, const uchar* data, size_t length)
 {
     // configure the spi to 8 bit mode
     spi_set_format(this->spi, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
@@ -254,8 +198,7 @@ void Display::writeData(Display_Commands command, const uchar* data, size_t leng
     gpio_put(this->pins.dc, 0);
 
     // send the command
-    uchar commandByte = (uchar)command;
-    spi_write_blocking(this->spi, &commandByte, sizeof(commandByte));
+    spi_write_blocking(this->spi, &command, 1);
 
     // send the data
     gpio_put(this->pins.dc, 1);

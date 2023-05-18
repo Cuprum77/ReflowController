@@ -9,6 +9,7 @@ add_library(${PROJECT_NAME}
     src/Display.cpp
     src/Print.cpp
     src/Graphics.cpp
+    Specifics/ST7789.cpp
     Specifics/GC9A01.cpp
 )
 add_library(sub::Display ALIAS ${PROJECT_NAME})

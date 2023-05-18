@@ -26,7 +26,7 @@ void Display::GC9A01_Init()
 	this->writeData(0x8e, (const uint8_t *) "\xFF", 1);
 	this->writeData(0x8f, (const uint8_t *) "\xFF", 1);
 	this->writeData(0xb6, (const uint8_t *) "\x00\x00", 2);
-	this->writeData(0x3a, (const uint8_t *) "\x55", 1); // COLMOD
+	this->writeData(0x3a, (const uint8_t *) "\x55", 1);
 	this->writeData(0x90, (const uint8_t *) "\x08\x08\x08\x08", 4);
 	this->writeData(0xbd, (const uint8_t *) "\x06", 1);
 	this->writeData(0xbc, (const uint8_t *) "\x00", 1);
@@ -42,8 +42,8 @@ void Display::GC9A01_Init()
  	this->writeData(0xf2, (const uint8_t *) "\x45\x09\x08\x08\x26\x2A", 6);
  	this->writeData(0xf3, (const uint8_t *) "\x43\x70\x72\x36\x37\x6F", 6);
 	this->writeData(0xed, (const uint8_t *) "\x1B\x0B", 2);
-	this->writeData(0xAe, (const uint8_t *) "\x77", 1);
-	this->writeData(0xCD, (const uint8_t *) "\x63", 1);
+	this->writeData(0xae, (const uint8_t *) "\x77", 1);
+	this->writeData(0xcd, (const uint8_t *) "\x63", 1);
 	this->writeData(0x70, (const uint8_t *) "\x07\x07\x04\x0E\x0F\x09\x07\x08\x03", 9);
 	this->writeData(0xe8, (const uint8_t *) "\x34", 1);
 	this->writeData(0x62, (const uint8_t *) "\x18\x0D\x71\xED\x70\x70\x18\x0F\x71\xEF\x70\x70", 12);
@@ -79,4 +79,34 @@ void Display::GC9A01_HardReset()
 	gpio_put(this->pins.rst, 0);
 	sleep_ms(50);
 	gpio_put(this->pins.rst, 1);
+}
+
+void Display::GC9A01_SetRotation(displayRotation_t rotation)
+{
+	uint width = this->params.width;
+	uint height = this->params.height;
+	switch(rotation)
+    {
+        case displayRotation_t::DEG_90:
+			this->writeData(MADCTL, (uchar)(Display_MADCTL::MX | Display_MADCTL::MV | Display_MADCTL::BGR));
+			this->params.height = width;
+			this->params.width = height;
+            break;
+        case displayRotation_t::DEG_180:
+			this->writeData(MADCTL, (uchar)(Display_MADCTL::MX | Display_MADCTL::MY | Display_MADCTL::BGR));
+			this->params.height = height;
+			this->params.width = width;
+            break;
+        case displayRotation_t::DEG_270:
+			this->writeData(MADCTL, (uchar)(Display_MADCTL::MV | Display_MADCTL::MY | Display_MADCTL::BGR));
+			this->params.height = width;
+			this->params.width = height;
+            break;
+        case displayRotation_t::DEG_0:
+        default:
+            this->writeData(MADCTL, (uchar)Display_MADCTL::BGR);
+			this->params.height = height;
+			this->params.width = width;
+            break;
+    }
 }
