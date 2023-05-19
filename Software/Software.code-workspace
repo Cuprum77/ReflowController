@@ -4,5 +4,11 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"*.latex": "latex",
+			"compare": "cpp",
+			"type_traits": "cpp"
+		}
+	}
 }

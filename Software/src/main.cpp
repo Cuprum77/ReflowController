@@ -19,6 +19,7 @@ Display_Params displayParams = {
 	.columnOffset2 = DISPLAY_OFFSET_X1,
 	.rowOffset1 = DISPLAY_OFFSET_Y0,
 	.rowOffset2 = DISPLAY_OFFSET_Y1,
+	.rotation = DISPLAY_ROTATION,
 #endif
 };
 
@@ -58,7 +59,14 @@ int main()
 
 	// verify that the EEPROM is connected
 	bool EEPROM_is_connected = memory.verifyConnection();
-	display.fill(Colors::RaspberryRed);
+	//display.fill(Colors::White);
+
+	display.drawFilledCircle(Point(120,120), 120, Colors::Blue);
+	display.drawLine(Point(0,0), Point(240,240), Colors::Black);
+	display.drawLine(Point(240,0), Point(0,240), Colors::Black);
+	display.drawCircle(Point(120,120), 120, Colors::Red);
+	display.setCursor(Point(0,120));
+	display.print("Hello World!");
 
 	// infinite loop
 	while(1)
