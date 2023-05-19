@@ -50,7 +50,7 @@
 #define DISPLAY_SCK 18
 #define DISPLAY_MOSI 19
 #define DISPLAY_RST 20
-#define DISPLAY_ROTATION 2  // 0 = horizontal, 1 = portrait, 2 = flipped horizontal, 3 = flipped portrait
+#define DISPLAY_BL -1
 
 // Encouder pins
 #define ENCODER_A 23
@@ -85,6 +85,7 @@
 #define DISPLAY_OFFSET_X1 0
 #define DISPLAY_OFFSET_Y0 0
 #define DISPLAY_OFFSET_Y1 0
+#define DISPLAY_ROTATION 2  // 0 = horizontal, 1 = portrait, 2 = flipped horizontal, 3 = flipped portrait
 
 
 /***

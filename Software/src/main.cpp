@@ -8,6 +8,7 @@ Display_Pins displayPins = {
 	.cs = DISPLAY_CS,
 	.sda = DISPLAY_MOSI,
 	.scl = DISPLAY_SCK,
+	.bl = DISPLAY_BL,
 #endif
 };
 
@@ -49,9 +50,6 @@ int main()
 	// set the binary data to show the pins used for I2C0
 	bi_decl(bi_2pins_with_func(I2C_SDA, I2C_SCL, GPIO_FUNC_I2C));
 
-	// enable watchdog requiring a reset every 1000ms
-	watchdog_enable(1000, 1);
-
 	// initialize the MCP9600 ICs
 	mcp9600_1.init();
 	mcp9600_2.init();
@@ -61,12 +59,15 @@ int main()
 	bool EEPROM_is_connected = memory.verifyConnection();
 	//display.fill(Colors::White);
 
-	display.drawFilledCircle(Point(120,120), 120, Colors::Blue);
-	display.drawLine(Point(0,0), Point(240,240), Colors::Black);
-	display.drawLine(Point(240,0), Point(0,240), Colors::Black);
-	display.drawCircle(Point(120,120), 120, Colors::Red);
-	display.setCursor(Point(0,120));
-	display.print("Hello World!");
+	//display.drawFilledRectangle(Point(50,50), Point(150,150), Colors::Red);
+	display.drawLine(Point(0,0), Point(240,240));
+	display.drawLine(Point(240,0), Point(0,240));
+	display.drawCircle(Point(120,120), 120);
+	//display.setCursor(Point(50,50));
+	//display.print("Hi!");
+
+	// enable watchdog requiring a reset every 1000ms
+	watchdog_enable(1000, 1);
 
 	// infinite loop
 	while(1)
@@ -78,6 +79,9 @@ int main()
 				mcp9600_3.getColdJunctionTemperature(),
 				mcp9600_3.getJunctionTemperatureDelta());
 		}
+
+		//display.setCursor(Point(50,20));
+		//display.print(mcp9600_3.getHotJunctionTemperature());
 
 		// delay
 		sleep_ms(500);
