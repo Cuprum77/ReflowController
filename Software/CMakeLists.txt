@@ -112,10 +112,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/Memory)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/MCP9600)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/PicoGFX)
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/PID)
 
 link_directories(${CMAKE_SOURCE_DIR}/lib/Memory)
 link_directories(${CMAKE_SOURCE_DIR}/lib/MCP9600)
 link_directories(${CMAKE_SOURCE_DIR}/lib/PicoGFX)
+link_directories(${CMAKE_SOURCE_DIR}/lib/PID)
 
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})
@@ -128,6 +130,7 @@ target_link_libraries(${PROJECT_NAME}
     Memory
     MCP9600
     PicoGFX
+    PID
 )
 
 # Enable usb output, disable uart output

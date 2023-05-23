@@ -8,7 +8,8 @@
 		"files.associations": {
 			"*.latex": "latex",
 			"compare": "cpp",
-			"type_traits": "cpp"
+			"type_traits": "cpp",
+			"cmath": "cpp"
 		}
 	}
 }

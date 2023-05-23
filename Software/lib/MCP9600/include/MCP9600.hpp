@@ -65,12 +65,16 @@ public:
     void init();
     bool isConnected();
 
-    float getHotJunctionTemperature();
-    float getJunctionTemperatureDelta();
-    float getColdJunctionTemperature();
+    double getTemperature();
+    double getDifference();
+    double getAmbientTemperature();
 
-    float convertTemperature(uint8_t* data);
-    uint16_t convertTemperature(float data);
+    uint getHotJunctionTemperature();
+    uint getDeltaTemperature();
+    uint getColdJunctionTemperature();
+
+    double convertTemperature(uint8_t* data);
+    uint16_t convertTemperature(double data);
 
     uint getId();
     uint getRevision();

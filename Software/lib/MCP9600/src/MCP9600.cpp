@@ -57,7 +57,7 @@ bool MCP9600::isConnected()
  * @brief Get the hot junction temperature
  * @return The hot junction temperature in degrees celsius
  */
-float MCP9600::getHotJunctionTemperature()
+double MCP9600::getTemperature()
 {
     // create a buffer to store the data
     uint8_t buffer[2];
@@ -71,7 +71,7 @@ float MCP9600::getHotJunctionTemperature()
  * @brief Get the junction temperature delta
  * @return The junction temperature delta in degrees celsius
  */
-float MCP9600::getJunctionTemperatureDelta()
+double MCP9600::getDifference()
 {
     // create a buffer to store the data
     uint8_t buffer[2];
@@ -85,7 +85,7 @@ float MCP9600::getJunctionTemperatureDelta()
  * @brief Get the cold junction temperature
  * @return The cold junction temperature in degrees celsius
  */
-float MCP9600::getColdJunctionTemperature()
+double MCP9600::getAmbientTemperature()
 {
     // create a buffer to store the data
     uint8_t buffer[2];
@@ -100,7 +100,7 @@ float MCP9600::getColdJunctionTemperature()
  * @param temperature The temperature to convert
  * @return The converted temperature
  */
-uint16_t MCP9600::convertTemperature(float temperature)
+uint16_t MCP9600::convertTemperature(double temperature)
 {
     // check if data is negative
     bool is_negative = temperature < 0;
@@ -139,14 +139,12 @@ uint MCP9600::getRevision()
  * @return The temperature in degrees celsius
  * @note Expects MSB first
 */
-float MCP9600::convertTemperature(uint8_t* data)
+double MCP9600::convertTemperature(uint8_t* data)
 {
     // convert the data to a float
     float temperature = (float)((data[0] << 0x8) | data[1]);
     // multiply by the resolution to get the temperature in degrees celsius
     temperature *= MCP9600_TEMP_RESOLUTION;
-    // if negative temperature, subtract 4096
-    if (data[0] & 0x8) temperature -= 4096;
     return temperature;
 }
 

@@ -129,6 +129,7 @@
 #include "Memory.hpp"
 #include "MCP9600.hpp"
 #include "Display.hpp"
+#include "PID.hpp"
 #include "version.h"
 
 
