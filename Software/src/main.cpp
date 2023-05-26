@@ -32,7 +32,12 @@ MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0);
 Display display(spi0, displayPins, displayParams, GC9A01);
 PID pid(1.25f, 0.0f, 0.0f, 0.02f, -127.0f, 127.0f, 0.1f);
 
+// global variables
+double measurement = 0;
+double target = 0;
+
 void runOven();
+void main1();
 
 unsigned long offTime = 0;
 unsigned long onTime = 0;
@@ -69,14 +74,14 @@ int main()
 
 	// verify that the EEPROM is connected
 	bool EEPROM_is_connected = memory.verifyConnection();
-	display.fill(Colors::RaspberryRed);
+	display.fillGradient(Colors::RaspberryRed, Colors::Derg, Point(0,0), Point(display.getWidth(), display.getHeight()));
 	//display.fillGradient(Colors::RaspberryRed, Colors::Derg, {0,0}, {DISPLAY_WIDTH, DISPLAY_HEIGHT});
 
 	// enable watchdog requiring a reset every 1000ms
 	watchdog_enable(1000, 1);
 
-	// infinite loop
-	uint itteration = 5;
+	// setup the second core
+	multicore_launch_core1(main1);
 	
 	while(1)
 	{
@@ -107,9 +112,6 @@ int main()
 	}
 }
 
-float prevTemp1 = 0;
-float prevTemp2 = 0;
-unsigned long lastUpdate = 0;
 bool prevButton = true;
 void runOven()
 {
@@ -144,51 +146,68 @@ void runOven()
 		pid.reset();
 		target = mcp9600_3.getAmbientTemperature();
 	}
+}
 
-	if(measurement >= 100)
-	{
-		int length1 = (display.getStringLength(measurement, 0, 2) + FONT_WIDTH * 2);
-		display.setCursor(Point(
-			(DISPLAY_WIDTH - length1) >> 1, 
-			(DISPLAY_HEIGHT >> 1) - FONT_HEIGHT)
-		);
-		display.print(measurement, Colors::White, 0, 2);
-		display.print("C", Colors::White, 2);
-	}
-	else
-	{
-		int length1 = (display.getStringLength(measurement, 1, 2) + FONT_WIDTH * 2);
-		// i genuinely do not know how the fuck this is 4 font width wider than it should be
-		length1 -= FONT_WIDTH * 2;
-		display.setCursor(Point(
-			(DISPLAY_WIDTH - length1) >> 1, 
-			(DISPLAY_HEIGHT >> 1) - FONT_HEIGHT)
-		);
-		display.print(measurement, Colors::White, 1, 2);
-		display.print("C", Colors::White, 2);
-	}
+void main1()
+{
+	int radius = 200;
+	double theta = 0;
+	double rotationSpeed = 0.05;
 
-	if((prevTemp1 >= 100 && measurement < 100) || 
-		(prevTemp2 >= 100 && target < 100) || 
-		(prevTemp1 < 100 && measurement >= 100) || 
-		(prevTemp2 < 100 && target >= 100))
-		display.fill(Colors::RaspberryRed);
-
-	int length2 = (display.getStringLength(target) + FONT_WIDTH);
-	display.setCursor(Point(
-		(DISPLAY_WIDTH - length2) >> 1, 
-		(DISPLAY_HEIGHT >> 1) + FONT_HEIGHT)
+	Point cursor = Point(0, 5);
+	Point center = display.getCenter();
+	Point start = Point(
+		(int)(center.x - radius * cos(theta)), 
+		(int)(center.y - radius * sin(theta))
 	);
-	display.print(target, Colors::DarkGrey, 2, 1);
-	display.print("C", Colors::DarkGrey, 1);
+	Point end = Point(
+		(int)(center.x + radius * cos(theta)), 
+		(int)(center.y + radius * sin(theta))
+	);
 
-	prevTemp1 = measurement;
-	prevTemp2 = target;
-
-	// fill the screen once every 5 seconds using millis
-	if((time_us_32() - lastUpdate) > 5000000)
+	while(1)
 	{
-		display.fill(Colors::RaspberryRed);
-		lastUpdate = time_us_32();
+		display.fillGradient(Colors::Pink, Colors::Derg, start, end);
+		if(measurement >= 100)
+		{
+			int length1 = (display.getStringLength(measurement, 0, 2) + FONT_WIDTH * 2);
+			display.setCursor(Point(
+				(DISPLAY_WIDTH - length1) >> 1, 
+				(DISPLAY_HEIGHT >> 1) - FONT_HEIGHT)
+			);
+			display.print(measurement, Colors::White, 0, 2);
+			display.print("C", Colors::White, 2);
+		}
+		else
+		{
+			int length1 = (display.getStringLength(measurement, 1, 2) + FONT_WIDTH * 2);
+			// i genuinely do not know how the fuck this is 4 font width wider than it should be
+			length1 -= FONT_WIDTH * 2;
+			display.setCursor(Point(
+				(DISPLAY_WIDTH - length1) >> 1, 
+				(DISPLAY_HEIGHT >> 1) - FONT_HEIGHT)
+			);
+			display.print(measurement, Colors::White, 1, 2);
+			display.print("C", Colors::White, 2);
+		}
+
+		int length2 = (display.getStringLength(target) + FONT_WIDTH);
+		display.setCursor(Point(
+			(DISPLAY_WIDTH - length2) >> 1, 
+			(DISPLAY_HEIGHT >> 1) + FONT_HEIGHT)
+		);
+		display.print(target, Colors::DarkGrey, 2, 1);
+		display.print("C", Colors::DarkGrey, 1);
+		display.writeBuffer();
+
+		theta += rotationSpeed;
+		start = Point(
+			(int)(center.x - radius * cos(theta)), 
+			(int)(center.y - radius * sin(theta))
+		);
+		end = Point(
+			(int)(center.x + radius * cos(theta)), 
+			(int)(center.y + radius * sin(theta))
+		);
 	}
 }
