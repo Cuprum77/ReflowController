@@ -1264,6 +1264,7 @@
   )
 
   (no_connect (at 181.61 137.16) (uuid 1fed9be6-d254-4f69-a097-8a77c696059b))
+  (no_connect (at 181.61 60.96) (uuid ad94447b-1d5c-46b2-a041-7af6a0341eed))
   (no_connect (at 232.41 137.16) (uuid dc46ebb0-6e65-459b-8883-f4dd96aa2c6b))
 
   (wire (pts (xy 125.73 165.1) (xy 111.76 165.1))
@@ -1482,10 +1483,6 @@
     (stroke (width 0) (type default))
     (uuid 4304a944-8efa-460a-b861-0f260f68ab3e)
   )
-  (wire (pts (xy 142.24 62.23) (xy 142.24 60.96))
-    (stroke (width 0) (type default))
-    (uuid 4334a5ca-60aa-4a74-8029-3ffdea2c8d23)
-  )
   (wire (pts (xy 232.41 91.44) (xy 250.19 91.44))
     (stroke (width 0) (type default))
     (uuid 43d98612-8003-450a-8e02-d95ae846fa7c)
@@ -1629,10 +1626,6 @@
   (wire (pts (xy 106.68 40.64) (xy 106.68 38.1))
     (stroke (width 0) (type default))
     (uuid 70923369-07c0-4b6b-b251-71b864ce18f0)
-  )
-  (wire (pts (xy 142.24 60.96) (xy 147.32 60.96))
-    (stroke (width 0) (type default))
-    (uuid 723a7485-93eb-42d6-8477-b412b0c4acc7)
   )
   (wire (pts (xy 62.23 30.48) (xy 71.12 30.48))
     (stroke (width 0) (type default))
@@ -1962,10 +1955,6 @@
     (stroke (width 0) (type default))
     (uuid df7e5f28-4339-415c-a09e-7464e8e6c573)
   )
-  (wire (pts (xy 157.48 60.96) (xy 181.61 60.96))
-    (stroke (width 0) (type default))
-    (uuid e07b4a38-e9b4-4536-b39c-911ad6ecb393)
-  )
   (wire (pts (xy 43.18 30.48) (xy 34.29 30.48))
     (stroke (width 0) (type default))
     (uuid e45dcbb5-595a-44dd-a721-c442363c4c0b)
@@ -2169,10 +2158,6 @@
   (label "QSPI_SD0" (at 78.74 167.64 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 4d736028-ca9f-4593-bc0e-aaf3d41c1501)
-  )
-  (label "RST" (at 163.83 60.96 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid 4ee2abbd-1cdb-44a4-998c-47873feb9d03)
   )
   (label "SDA" (at 250.19 60.96 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
@@ -3444,42 +3429,6 @@
     )
   )
 
-  (symbol (lib_id "power:GND") (at 142.24 62.23 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 88908b04-d899-42a7-bffe-459299e10e95)
-    (property "Reference" "#PWR012" (at 142.24 68.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 142.24 66.7925 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 142.24 62.23 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 142.24 62.23 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 6dec0690-8b44-453c-8a0d-8e384218e368))
-    (instances
-      (project "Reflow Oven"
-        (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05"
-          (reference "#PWR012") (unit 1)
-        )
-        (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/43b08574-0fed-4e0b-a6ee-f48c75075e2f"
-          (reference "#PWR052") (unit 1)
-        )
-      )
-      (project "USB-PD"
-        (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6"
-          (reference "#PWR?") (unit 1)
-        )
-        (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6/e00e204b-d6fc-451e-8397-028d03c22f27"
-          (reference "#PWR051") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "Device:C_Small") (at 128.27 116.84 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 8e6d8083-61c9-4255-adb7-6562a72d61ab)
@@ -4447,43 +4396,6 @@
         )
         (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6/e00e204b-d6fc-451e-8397-028d03c22f27"
           (reference "C37") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "Switch:SW_Push") (at 152.4 60.96 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid eed9a5c4-81e6-49bf-9253-480db69aa03a)
-    (property "Reference" "SW2" (at 152.4 55.88 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Value" "DNF" (at 152.4 55.88 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Footprint" "KiCAD Library:PTS636 SM25J SMTR LFS" (at 152.4 55.88 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (at 152.4 55.88 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid a9fc0c27-7038-4150-988e-0699da3d8fe4))
-    (pin "2" (uuid 619f98c3-8185-44ed-8355-83afca92cf91))
-    (instances
-      (project "Reflow Oven"
-        (path "/a8f55c7f-bff8-431d-a8db-3e7e1d4b6c05/43b08574-0fed-4e0b-a6ee-f48c75075e2f"
-          (reference "SW2") (unit 1)
-        )
-      )
-      (project "USB-PD"
-        (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6"
-          (reference "SW?") (unit 1)
-        )
-        (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6/6306dd5a-5b79-432e-ad73-0295989b9f81"
-          (reference "SW3") (unit 1)
-        )
-        (path "/dbd87a35-3166-440e-a8f0-c71d214a12a6/e00e204b-d6fc-451e-8397-028d03c22f27"
-          (reference "SW4") (unit 1)
         )
       )
     )
