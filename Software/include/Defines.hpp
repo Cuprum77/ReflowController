@@ -26,19 +26,9 @@
 #define ALARM_PIN_3_C 7
 #define ALARM_PIN_4_C 6
 
-// dev
-#define ALARM_PIN_1_D 15
-#define ALARM_PIN_2_D 14
-#define ALARM_PIN_3_D 13
-#define ALARM_PIN_4_D 12
-
 // I2C pins
-//#define I2C_SDA 0
-//#define I2C_SCL 1
-
-// dev
-#define I2C_SDA 20
-#define I2C_SCL 21
+#define I2C_SDA 0
+#define I2C_SCL 1
 
 // Button pins
 #define BUTTON_PIN 14
@@ -57,13 +47,14 @@
 #define ENCODER_B 22
 #define ENCODER_SW 21
 
-// Built in LED
-#define LED_PIN 25
+// Status LEDs
+#define LED_BUILDIN 25
+#define LED_FRONT 24
 
 // Output Enable
-#define OUTPUT_ENABLE_1_PIN 26
+#define OUTPUT_ENABLE_1_PIN 28
 #define OUTPUT_ENABLE_2_PIN 27
-#define OUTPUT_ENABLE_3_PIN 28
+#define OUTPUT_ENABLE_3_PIN 26
 
 
 /***
@@ -98,8 +89,8 @@
  */
 
 // MCP9600 Breakout boards
-#define MCP9600_1_ADDRESS 0x60
-#define MCP9600_2_ADDRESS 0x61  
+#define MCP9600_1_ADDRESS 0x61
+#define MCP9600_2_ADDRESS 0x60  
 #define MCP9600_3_ADDRESS 0x67
 
 // EEPROM IC
@@ -128,10 +119,12 @@
 
 #include "Memory.hpp"
 #include "MCP9600.hpp"
-#include "Display.hpp"
 #include "PID.hpp"
 #include "version.h"
 
+#include "PicoGFX.hpp"
+#include "ComicSans24.font"
+#include "ComicSans48.font"
 
 
 /***
