@@ -2110,6 +2110,11 @@
     (effects (font (size 2 2)) (justify left bottom))
     (uuid 6a32b9dd-cba1-475c-9d32-f89c1433df79)
   )
+  (text "R21 should be between 1-10k\nR22 should not be fitted\n"
+    (at 19.05 144.78 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 6b723fac-0d88-4b88-aabd-a3dcaa260fc8)
+  )
   (text "Make sure C19 is close to pin 44" (at 96.52 45.72 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 7c457478-9f44-4fbc-8e4c-000189f8d1c5)
