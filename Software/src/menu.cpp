@@ -5,11 +5,13 @@
  * @param display Pointer to the display object
  * @param oven Pointer to the oven object
 */
-Menu::Menu(PicoGFX* display, Oven* oven, RotaryEncoder* encoder)
+Menu::Menu(PicoGFX* display, Oven* oven, RotaryEncoder* encoder, FontStruct* fontBig, FontStruct* fontSmall)
 {
     this->display = display;
     this->oven = oven;
     this->encoder = encoder;
+    this->fontBig = fontBig;
+    this->fontSmall = fontSmall;
 }
 
 /**
@@ -28,15 +30,6 @@ void Menu::attachTemperatureGauge(DialGauge* temperatureGauge)
 void Menu::attachSetPointGauge(DialGauge* setPointMenu)
 {
     this->setPointGauge = setPointMenu;
-}
-
-/**
- * @brief Get the heatmap pointer
- * @return Color pointer to the heatmap
-*/
-Color* Menu::getHeatmap()
-{
-    return this->heatmap;
 }
 
 /**
@@ -113,7 +106,7 @@ error_state_t Menu::drawTemperatureGauge()
     }
 
 	// Handle the hot junction temperature printing
-	display->getPrint().setFont(&ComicSans48);
+	display->getPrint().setFont(this->fontBig);
 	display->getPrint().setColor(Colors::White);
 	display->getPrint().setString("%d C", this->temperature);
 	display->getPrint().center();
@@ -145,7 +138,7 @@ error_state_t Menu::drawSetPointMenu()
     // Otherwise, update the temperature gauge
     else
     {
-        this->setPointGauge->update(this->temperature);
+        //this->setPointGauge->update(this->temperature);
         // Apply basic anti-aliasing
         display->getGraphics().antiAliasingFilter();
     }

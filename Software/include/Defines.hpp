@@ -136,7 +136,9 @@
 #include "version.h"
 #include "PicoGFX.hpp"
 #include "ComicSans48.font"
+#include "ComicSans24.font"
 
+#include "heatmap.h"
 #include "error.hpp"
 #include "oven.hpp"
 #include "rotaryEncoder.hpp"
