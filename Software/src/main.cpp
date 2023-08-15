@@ -32,9 +32,8 @@ Display display(&spi, &displayPins, &displayParams);
 // Create the GFX objects
 Print print(display.getFrameBuffer(), displayParams);
 Graphics graphics(display.getFrameBuffer(), displayParams);
-Gradients gradients(display.getFrameBuffer(), displayParams);
 // Create the PicoGFX object
-PicoGFX picoGFX(&display, &print, &graphics, &gradients, nullptr);
+PicoGFX picoGFX(&display, &print, &graphics, nullptr, nullptr);
 
 // initialize the EEPROM and MCP9600 ICs, etc...
 Memory memory(EEPROM_ADDRESS, i2c0);
@@ -44,54 +43,41 @@ MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0);
 PID pid(DEFAULT_KP, DEFAULT_KI, DEFAULT_KD, DEFAULT_DT, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_TOLERANCE);
 Oven oven(&pid, &mcp9600_1, &mcp9600_2, &mcp9600_3, OUTPUT_ENABLE_1_PIN, OUTPUT_ENABLE_2_PIN, OUTPUT_ENABLE_3_PIN, LED_FRONT);
 RotaryEncoder encoder(ENCODER_A, ENCODER_B, ENCODER_SW, CRITICAL_TEMPERATURE);
-Menu menu(&picoGFX, &oven, &encoder);
+Menu menu(&picoGFX, &oven, &encoder, &ComicSans48, &ComicSans24);
 Button button(BUTTON_PIN, true);
 
+// Declare variables for the timer loops
+unsigned long runOccasionallyLastTime = 0;
+unsigned long blinkLastTime = 0;
+int targetTemperature = 0;
+bool blink = false;
+bool runOven = false;
+bool prevButtonState = false;
+
 // Handle the variables for the dial gauges
-Color setPointColors[2] = { Colors::White, Colors::Red };
-size_t heatMapSize = sizeof(menu.getHeatmap()) / sizeof(menu.getHeatmap()[0]);
+static Color setPointColors[2] = { Colors::White, Colors::Red };
 size_t setPointColorSize = sizeof(setPointColors) / sizeof(setPointColors[0]);
+Point center = picoGFX.getDisplay().getCenter();
+int width = picoGFX.getDisplay().getWidth();
+int height = picoGFX.getDisplay().getHeight();
+int radius = picoGFX.getDisplay().getWidth() >> 1;
 
 // Create a dial gauge object based on the display
-const DialGauge temperatureGauge
-(
-	picoGFX.getGraphicsPtr(), 				// Pointer to the graphics object
-	picoGFX.getDisplay().getWidth(), 		// Width of the display
-	picoGFX.getDisplay().getHeight(),		// Height of the display
-	picoGFX.getDisplay().getCenter(),		// Center of the display
-	picoGFX.getDisplay().getWidth() >> 1,	// Radius of the dial
-	LOWEST_TEMPERATURE,						// Minimum value of the dial
-	CRITICAL_TEMPERATURE,					// Maximum value of the dial
-	menu.getHeatmap(),						// Pointer to the heatmap
-	heatMapSize,							// Size of the heatmap
-	DialGaugeType_t::DialSimple				// Type of dial gauge
-);
-
+DialGauge temperatureGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, CRITICAL_TEMPERATURE, heatmap, heatmapSize, DialGaugeType_t::DialSimple);
 // Create another dial for the set point menu
-const DialGauge setPointGauge
-(
-	picoGFX.getGraphicsPtr(), 				// Pointer to the graphics object
-	picoGFX.getDisplay().getWidth(), 		// Width of the display
-	picoGFX.getDisplay().getHeight(),		// Height of the display
-	picoGFX.getDisplay().getCenter(),		// Center of the display
-	picoGFX.getDisplay().getWidth() >> 1,	// Radius of the dial
-	LOWEST_TEMPERATURE,						// Minimum value of the dial
-	CRITICAL_TEMPERATURE,					// Maximum value of the dial
-	setPointColors,							// Pointer to the heatmap
-	setPointColorSize,						// Size of the heatmap
-	DialGaugeType_t::DialSimple2			// Type of dial gauge
-);
+DialGauge setPointGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, CRITICAL_TEMPERATURE, setPointColors, setPointColorSize, DialGaugeType_t::DialSimple2);
+
+// Keep track of the menu state
+menuState_t menuState = menuState_t::menuTemperature;
 
 void main1()
 {
 	// Wait for the other core to be ready
 	while(!multicore_fifo_pop_blocking()) tight_loop_contents();
 
-	// Keep track of the menu state
-	menuState_t menuState = menuState_t::menuTemperature;
-
 	// Attach the temperature gauge to the menu
 	menu.attachTemperatureGauge(&temperatureGauge);
+	menu.attachSetPointGauge(&setPointGauge);
 
 	while(1)
 	{
@@ -145,14 +131,6 @@ int main()
 
 	// Tell the other core that they can start
 	multicore_fifo_push_blocking(1);
-
-	// Declare variables for the timer loops
-	unsigned long runOccasionallyLastTime = 0;
-	unsigned long blinkLastTime = 0;
-	int targetTemperature = 0;
-	bool blink = false;
-	bool runOven = false;
-	bool prevButtonState = false;
 	
 	while(1)
 	{
