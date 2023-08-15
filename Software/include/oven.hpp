@@ -23,10 +23,10 @@ public:
     Oven(PID* pid, MCP9600* sensor1, MCP9600* sensor2, MCP9600* sensor3, int heaterPin1, int heaterPin2, int heaterPin3, int indicatorPin);
     
     error_state_t init(heaters_t heaters = heaters_t::HEATER_1_2_3);
-    int reading();
+    int getReading();
     void setHeaterConfiguration(heaters_t heaters);
 
-    error_state_t updateHeaters(bool active, int target);
+    error_state_t updateHeaters(bool active, float target);
     
 private:
     PID* pid, *pid2, *pid3;
@@ -35,7 +35,9 @@ private:
     unsigned int sensorCount = 0;
     unsigned int heaterPin1, heaterPin2, heaterPin3, indicatorPin;
     unsigned int heaterConfiguration;
+    int temperature = 0;
 
+    float reading();
     bool getPinState(int pidOutput);
     void setHeaterPins(bool state);
 };

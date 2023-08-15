@@ -34,7 +34,7 @@ private:
 	FontStruct* fontSmall = nullptr;
 	DialGauge* temperatureGauge = nullptr;
 	DialGauge* setPointGauge = nullptr;
-	int temperature = 0, setPoint = 0;
+	int temperature = 0, setPoint = 50;
 
 	error_state_t drawTemperatureGauge();
 	error_state_t drawSetPointMenu();

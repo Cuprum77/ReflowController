@@ -43,7 +43,7 @@ error_state_t Menu::update(menuState_t menu)
     int error = 0;
 
     // Grab the current temperature
-    this->temperature = oven->reading();
+    this->temperature = oven->getReading();
     // If temperature is MAX_INT, there was an error
     if(this->temperature == 0x7fffffff)
     {

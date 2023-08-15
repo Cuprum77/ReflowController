@@ -53,6 +53,7 @@ int targetTemperature = 0;
 bool blink = false;
 bool runOven = false;
 bool prevButtonState = false;
+bool EEPROM_isConnected = false;
 
 // Handle the variables for the dial gauges
 static Color setPointColors[2] = { Colors::White, Colors::Red };
@@ -116,7 +117,7 @@ int main()
 	bi_decl(bi_2pins_with_func(I2C_SDA, I2C_SCL, GPIO_FUNC_I2C));
 
 	// verify that the EEPROM is connected
-	bool EEPROM_isConnected = memory.verifyConnection();
+	EEPROM_isConnected = memory.verifyConnection();
 
 	// enable watchdog requiring a reset every 500ms
 	watchdog_enable(500, 1);
@@ -134,17 +135,12 @@ int main()
 	
 	while(1)
 	{
-		// Update the encoder
-		encoder.update();
-		button.update();
-
 		// sleep for 10ms to avoid damaging the relay through PID seizures
 		if((time_us_64() - runOccasionallyLastTime) >= 10000)
 		{
 			// Check if the button was clicked
 			if(button.isClicked())
 				runOven = !runOven;
-
 			// Update the button led
 			gpio_put(BUTTON_LED_PIN, runOven);
 
@@ -160,6 +156,13 @@ int main()
 			blinkLastTime = time_us_32();
 		}
 
+		// Update the encoder
+		encoder.update();
+		
+		// Update the button
+		button.update();
+
+		// Kick the watchdog
 		watchdog_update();
 	}
 }

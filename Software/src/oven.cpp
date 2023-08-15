@@ -74,20 +74,10 @@ error_state_t Oven::init(heaters_t heaters)
  * @return Returns the average of the three sensors, or MAX_INT if no sensors are active
  * @note Will not average sensors which are not present!
 */
-int Oven::reading()
+int Oven::getReading()
 {
-    // If no sensors are active, return 0x7fffffff
-    if(!this->sensorCount) return 0x7fffffff;
-
-    // Declare a variable to hold the sum
-    int sum = 0;
-
-    // Get the temperature from each sensor if it is active
-    if(this->sensor1Active) sum += this->sensor1->getTemperature();
-    if(this->sensor2Active) sum += this->sensor2->getTemperature();
-    if(this->sensor3Active) sum += this->sensor3->getTemperature();
-
-    return sum / this->sensorCount;
+    int result = this->temperature;
+    return result;
 }
 
 /**
@@ -106,8 +96,11 @@ void Oven::setHeaterConfiguration(heaters_t heaters)
  * @return The error state of the function
  * @note This should be called in the main loop
 */
-error_state_t Oven::updateHeaters(bool active, int target)
+error_state_t Oven::updateHeaters(bool active, float target)
 {
+    // Get the latest temperature measurement
+    int measurement = reading();
+
     // Initialize the error return variable
     int error = 0;
 
@@ -122,9 +115,6 @@ error_state_t Oven::updateHeaters(bool active, int target)
     }
     else
     {
-        // Get the latest temperature measurement
-        int measurement = reading();
-
         // If temperature is MAX_INT, there was an error
         if(measurement == 0x7fffffff)
         {
@@ -146,6 +136,30 @@ error_state_t Oven::updateHeaters(bool active, int target)
     }
 
     return (error_state_t)error;
+}
+
+/**
+ * @private
+ * @brief Access variable to get the current temperature
+ * @return Returns the average of the three sensors, or MAX_INT if no sensors are active
+ * @note Will not average sensors which are not present!
+*/
+float Oven::reading()
+{
+    // If no sensors are active, return 0x7fffffff
+    if(!this->sensorCount) return 0x7fffffff;
+
+    // Declare a variable to hold the sum
+    float sum = 0;
+
+    // Get the temperature from each sensor if it is active
+    if(this->sensor1Active) sum += (float)this->sensor1->getTemperature();
+    if(this->sensor2Active) sum += (float)this->sensor2->getTemperature();
+    if(this->sensor3Active) sum += (float)this->sensor3->getTemperature();
+
+    this->temperature = sum / this->sensorCount;
+
+    return this->temperature;
 }
 
 /**
