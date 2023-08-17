@@ -47,7 +47,7 @@ error_state_t Oven::init(heaters_t heaters)
     this->sensor3Active = this->sensor3->isConnected();
 
     // Store the sensor count
-    this->sensorCount = this->sensor1Active + this->sensor2Active + this->sensor3Active;
+    this->sensorCount = (int)this->sensor1Active + (int)this->sensor2Active + (int)this->sensor3Active;
 
     // Modify the error variable based on the sensor status
     error |= (this->sensor1Active) ? (int)error_state_t::NO_ERROR : (int)error_state_t::SENSOR_SENSOR1_ERROR;
@@ -72,7 +72,7 @@ error_state_t Oven::init(heaters_t heaters)
 /**
  * @brief Access variable to get the current temperature
  * @return Returns the average of the three sensors, or MAX_INT if no sensors are active
- * @note Will not average sensors which are not present!
+ * @note Only fetches the temperature from the object, run updateHeaters() to update the temperature!
 */
 int Oven::getReading()
 {
@@ -98,11 +98,17 @@ void Oven::setHeaterConfiguration(heaters_t heaters)
 */
 error_state_t Oven::updateHeaters(bool active, float target)
 {
+    // Initialize the error return variable
+    int error = 0;
     // Get the latest temperature measurement
     int measurement = reading();
 
-    // Initialize the error return variable
-    int error = 0;
+    // If temperature is MAX_INT, there was an error
+    if(measurement == 0x7fffffff)
+    {
+        error |= (int)error_state_t::SENSOR_ALL_ERROR;
+        measurement = 0;
+    }
 
     // Check if the oven is not active
     if (!active)
@@ -115,20 +121,14 @@ error_state_t Oven::updateHeaters(bool active, float target)
     }
     else
     {
-        // If temperature is MAX_INT, there was an error
-        if(measurement == 0x7fffffff)
-        {
-            error |= (int)error_state_t::SENSOR_ALL_ERROR;
-            measurement = 0;
-        }
-
         // Update the PID
         this->pid->update(target, measurement);
 
         // Get the PID output
-        int pidOutput = this->pid->getOutput();
+        int pidOutput = (int)this->pid->output();
         // Apply the PID output to the heater
         bool state = getPinState(pidOutput);
+        printf(", actual: %f\n", this->pid->output());
         // Set the corresponding heater pins
         setHeaterPins(state);
         // Set the indicator led
@@ -171,11 +171,13 @@ float Oven::reading()
 bool Oven::getPinState(int pidOutput)
 {
     // Convert the pid output to a 0-100% value
-    unsigned long _pidOutput = (_pidOutput > 0) ? ((_pidOutput * 1000000) / 127) : 0;
+    unsigned long _pidOutput = (pidOutput > 0) ? ((pidOutput * 1000000) / 127) : 0;
 
     // Set the on and off times
     unsigned long onTime = _pidOutput;
     unsigned long offTime = 1000000 - _pidOutput;
+
+    printf("on/off time: %lu / %lu", onTime, offTime);
 
     // Figure out if the pin should be on or off
     bool state = ((time_us_64() % (onTime + offTime)) < onTime);

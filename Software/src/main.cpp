@@ -35,16 +35,18 @@ Graphics graphics(display.getFrameBuffer(), displayParams);
 // Create the PicoGFX object
 PicoGFX picoGFX(&display, &print, &graphics, nullptr, nullptr);
 
-// initialize the EEPROM and MCP9600 ICs, etc...
+// Create the peripheral objects
 Memory memory(EEPROM_ADDRESS, i2c0);
 MCP9600 mcp9600_1(MCP9600_1_ADDRESS, i2c0);
 MCP9600 mcp9600_2(MCP9600_2_ADDRESS, i2c0);
 MCP9600 mcp9600_3(MCP9600_3_ADDRESS, i2c0);
+Button button(BUTTON_PIN, true);
+RotaryEncoder encoder(ENCODER_A, ENCODER_B, ENCODER_SW, CRITICAL_TEMPERATURE);
+
+// Create the oven objects
 PID pid(DEFAULT_KP, DEFAULT_KI, DEFAULT_KD, DEFAULT_DT, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_TOLERANCE);
 Oven oven(&pid, &mcp9600_1, &mcp9600_2, &mcp9600_3, OUTPUT_ENABLE_1_PIN, OUTPUT_ENABLE_2_PIN, OUTPUT_ENABLE_3_PIN, LED_FRONT);
-RotaryEncoder encoder(ENCODER_A, ENCODER_B, ENCODER_SW, CRITICAL_TEMPERATURE);
 Menu menu(&picoGFX, &oven, &encoder, &ComicSans48, &ComicSans24);
-Button button(BUTTON_PIN, true);
 
 // Declare variables for the timer loops
 unsigned long runOccasionallyLastTime = 0;
@@ -64,9 +66,11 @@ int height = picoGFX.getDisplay().getHeight();
 int radius = picoGFX.getDisplay().getWidth() >> 1;
 
 // Create a dial gauge object based on the display
-DialGauge temperatureGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, CRITICAL_TEMPERATURE, heatmap, heatmapSize, DialGaugeType_t::DialSimple);
+DialGauge temperatureGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, 
+	CRITICAL_TEMPERATURE, heatmap, heatmapSize, DialGaugeType_t::DialSimple);
 // Create another dial for the set point menu
-DialGauge setPointGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, CRITICAL_TEMPERATURE, setPointColors, setPointColorSize, DialGaugeType_t::DialSimple2);
+DialGauge setPointGauge(&graphics, width, height, center, radius, LOWEST_TEMPERATURE, 
+	CRITICAL_TEMPERATURE, setPointColors, setPointColorSize, DialGaugeType_t::DialSimple2);
 
 // Keep track of the menu state
 menuState_t menuState = menuState_t::menuTemperature;
@@ -144,7 +148,7 @@ int main()
 			// Update the button led
 			gpio_put(BUTTON_LED_PIN, runOven);
 
-			oven.updateHeaters(runOven, menu.getSetPoint());
+			oven.updateHeaters(runOven, 50);
 			runOccasionallyLastTime = time_us_32();
 		}
 

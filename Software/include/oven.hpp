@@ -32,9 +32,9 @@ private:
     PID* pid, *pid2, *pid3;
     MCP9600* sensor1, *sensor2, *sensor3;
     bool sensor1Active = false, sensor2Active = false, sensor3Active = false;
-    unsigned int sensorCount = 0;
-    unsigned int heaterPin1, heaterPin2, heaterPin3, indicatorPin;
-    unsigned int heaterConfiguration;
+    int sensorCount = 0;
+    int heaterPin1, heaterPin2, heaterPin3, indicatorPin;
+    int heaterConfiguration;
     int temperature = 0;
 
     float reading();
