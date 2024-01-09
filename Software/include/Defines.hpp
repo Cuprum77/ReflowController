@@ -52,9 +52,9 @@
 #define LED_FRONT 24
 
 // Output Enable
-#define OUTPUT_ENABLE_1_PIN 28
+#define OUTPUT_ENABLE_1_PIN 26
 #define OUTPUT_ENABLE_2_PIN 27
-#define OUTPUT_ENABLE_3_PIN 26
+#define OUTPUT_ENABLE_3_PIN 28
 
 
 /***
@@ -65,6 +65,10 @@
  *        \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
  *                                                 
  */
+
+// Temperature defines (in °C)
+#define LOWEST_TEMPERATURE 20       // Room temperature, no real need to go lower (Only used to set the gauge range)
+#define CRITICAL_TEMPERATURE 250    // Max temperature the oven should withstand, NEVER EXCEED 300°C!
 
 // I2C Speed
 #define I2C_SPEED 100000
@@ -77,6 +81,15 @@
 #define DISPLAY_OFFSET_Y0 0
 #define DISPLAY_OFFSET_Y1 0
 #define DISPLAY_ROTATION 2  // 0 = horizontal, 1 = portrait, 2 = flipped horizontal, 3 = flipped portrait
+
+// PID Control loop
+#define DEFAULT_KP 1.25f
+#define DEFAULT_KI 0.00f
+#define DEFAULT_KD 0.00f
+#define DEFAULT_DT 0.02f
+#define DEFAULT_MIN -127.0f
+#define DEFAULT_MAX 127.0f
+#define DEFAULT_TOLERANCE 0.1f
 
 
 /***
@@ -117,14 +130,19 @@
 #include "hardware/watchdog.h"
 #include "tusb.h"
 
+#include "Button.hpp"
 #include "Memory.hpp"
 #include "MCP9600.hpp"
-#include "PID.hpp"
 #include "version.h"
-
 #include "PicoGFX.hpp"
-#include "ComicSans24.font"
 #include "ComicSans48.font"
+#include "ComicSans24.font"
+
+#include "heatmap.h"
+#include "error.hpp"
+#include "oven.hpp"
+#include "rotaryEncoder.hpp"
+#include "menu.hpp"
 
 
 /***

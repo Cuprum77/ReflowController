@@ -9,7 +9,9 @@
 			"*.latex": "latex",
 			"compare": "cpp",
 			"type_traits": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"*.font": "cpp",
+			"new": "cpp"
 		}
 	}
 }
