@@ -130,7 +130,7 @@ int main()
 	multicore_launch_core1(main1);
 
 	// Initialize the oven
-	oven.init();
+	oven.init(heaters_t::HEATER_3);
 	// Update the watchdog just in case
 	watchdog_update();
 

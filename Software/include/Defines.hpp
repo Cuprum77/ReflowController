@@ -52,9 +52,9 @@
 #define LED_FRONT 24
 
 // Output Enable
-#define OUTPUT_ENABLE_1_PIN 28
+#define OUTPUT_ENABLE_1_PIN 26
 #define OUTPUT_ENABLE_2_PIN 27
-#define OUTPUT_ENABLE_3_PIN 26
+#define OUTPUT_ENABLE_3_PIN 28
 
 
 /***
@@ -84,8 +84,8 @@
 
 // PID Control loop
 #define DEFAULT_KP 1.25f
-#define DEFAULT_KI 0.0f
-#define DEFAULT_KD 0.0f
+#define DEFAULT_KI 0.00f
+#define DEFAULT_KD 0.00f
 #define DEFAULT_DT 0.02f
 #define DEFAULT_MIN -127.0f
 #define DEFAULT_MAX 127.0f

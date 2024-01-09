@@ -74,9 +74,9 @@ error_state_t Oven::init(heaters_t heaters)
  * @return Returns the average of the three sensors, or MAX_INT if no sensors are active
  * @note Only fetches the temperature from the object, run updateHeaters() to update the temperature!
 */
-int Oven::getReading()
+float Oven::getReading()
 {
-    int result = this->temperature;
+    float result = this->temperature;
     return result;
 }
 
@@ -101,7 +101,8 @@ error_state_t Oven::updateHeaters(bool active, float target)
     // Initialize the error return variable
     int error = 0;
     // Get the latest temperature measurement
-    int measurement = reading();
+    float measurement = reading();
+    bool state = false;
 
     // If temperature is MAX_INT, there was an error
     if(measurement == 0x7fffffff)
@@ -127,12 +128,18 @@ error_state_t Oven::updateHeaters(bool active, float target)
         // Get the PID output
         int pidOutput = (int)this->pid->output();
         // Apply the PID output to the heater
-        bool state = getPinState(pidOutput);
-        printf(", actual: %f\n", this->pid->output());
+        state = getPinState(pidOutput);
         // Set the corresponding heater pins
         setHeaterPins(state);
         // Set the indicator led
         gpio_put(this->indicatorPin, state);
+    }
+
+    static unsigned long lastReport = 0;
+    if(time_us_64() - lastReport > 10000)
+    {
+        printf("t=%.2f, m=%.2f, a=%d, s=%d\n", target, measurement, active, state);
+        lastReport = time_us_64();
     }
 
     return (error_state_t)error;
@@ -171,13 +178,11 @@ float Oven::reading()
 bool Oven::getPinState(int pidOutput)
 {
     // Convert the pid output to a 0-100% value
-    unsigned long _pidOutput = (pidOutput > 0) ? ((pidOutput * 1000000) / 127) : 0;
+    unsigned long _pidOutput = (pidOutput > 0) ? ((pidOutput * MAXIMUM_ON_TIME) / 127) : 0;
 
     // Set the on and off times
     unsigned long onTime = _pidOutput;
-    unsigned long offTime = 1000000 - _pidOutput;
-
-    printf("on/off time: %lu / %lu", onTime, offTime);
+    unsigned long offTime = MAXIMUM_ON_TIME - _pidOutput;
 
     // Figure out if the pin should be on or off
     bool state = ((time_us_64() % (onTime + offTime)) < onTime);
